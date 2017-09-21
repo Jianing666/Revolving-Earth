@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				color: #ffffff;
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+				font-weight: bold;
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 5px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div id="container"></div>
+		<div id="info">Hello Everyone~!</div>
+
+		<script src="js/three.js"></script>
+		<!-- 顶点着色器 -->
+		<script id="vertexShader" type="x-shader/x-vertex">
+			 varying vec2 vUv;
+			// 入口函数
+			void main()	{
+				vUv = uv;
+				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+				gl_Position = projectionMatrix * mvPosition;
+			}
+
+		</script>
+		<!-- 片元着色器 -->
+		<script id="fragmentShader" type="x-shader/x-fragment">
+			varying vec2 vUv;
+
+			// Uniform是变量类型的一种修饰符,传递数据进入着色器,
+			// 使用存储各种着色器需要的数据，例如：转换矩阵、光照参数或者颜色。
+			uniform float time;
+			void main()	{
+
+				// 用四元矩阵标识片元颜色（浮点数）
+				// sin(time)实现循环
+				gl_FragColor = vec4(1.0,0.0,0.0,sin(2.0*(time + vUv.x * 4.0)));
+				if(gl_FragColor.a < 0.5) discard;
+			}
+
+		</script>
+		<script src= "./js/ryt_region.json"></script>
+		<script src = "js/main.js"></script>
+	</body>
+</html>
